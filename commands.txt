@@ -1,1 +1,5 @@
-W
+Windows: 
+cd /D H:
+.\httpd.exe -k restart
+
+Linux: 
