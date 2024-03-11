@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+      
+	<f:metadata>
+		<f:viewParam name="shopId" converter="shopConverter"  value="#{shopViewBean.selectedShop}"  required="true" requiredMessage="Wrong parameter!"/>
+	</f:metadata>
+	      
+	 <h:head>
+	        <title>Shop Seite</title>
+	</h:head>
+	
+	<h:body>
+
+		<p:messages showDetail="true" skipDetailIfEqualsSummary="false" redisplay="false"/>
+
+	     <h:outputText value="Shop Name: #{shopViewBean.selectedShop.name}" />  <br />         
+	     <h:outputText value="#{shopViewBean.selectedShop.details}" />         
+	     
+		<h:form>	
+				
+	    	<p:commandButton value="Ajax Link" action="#{shopListBean.navigateToNewPage(shopViewBean.selectedShop)}" />
+
+		</h:form>
+		
+		<p:linkButton value="Link" outcome="/shop/shopView.xhtml" target="_self">   
+			 <o:param name="shopId" converter="shopConverter" value="#{shopViewBean.selectedShop}"/>  
+		</p:linkButton>
+		
+	</h:body>
+</html>

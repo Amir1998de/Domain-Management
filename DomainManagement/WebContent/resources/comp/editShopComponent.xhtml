@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core">
+    
+    
+	<!-- INTERFACE -->
+	<composite:interface shortDescription="">
+		<composite:attribute name="shop" required="true" type="entitis.Shop" shortDescription="The new shop object to be edited or added." />
+	</composite:interface>
+	
+	
+
+	<!-- IMPLEMENTATION -->
+	<composite:implementation>
+	
+		<!-- component -->
+		<div id="#{cc.clientId}">
+		
+			<!-- PanelGrid to hold the inputs -->
+			<h:panelGrid columns="2" columnClasses="formColumn1,formColumn2">
+				
+				<h:outputText value="ID"/>
+				<p:inputText value="#{cc.attrs.shop.id}" required="true" label="ID"/>
+				
+				<h:outputText value="Name"/>
+				<p:inputText value="#{cc.attrs.shop.name}" required="true" label="Name"/>
+				
+				<h:outputText value="Detail"/>
+				<p:inputText value="#{cc.attrs.shop.details}" label="Detail"/>
+				
+			</h:panelGrid>
+		
+		</div>
+		
+
+	</composite:implementation>
+</html>

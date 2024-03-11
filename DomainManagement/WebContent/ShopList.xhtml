@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:comp="http://java.sun.com/jsf/composite/comp"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui">
+ <h:head>
+        <title>Shop List</title>
+    </h:head>
+     <h:body>
+	    <h3>Shop List</h3>
+         <h:form id="form_master">          
+			<pe:masterDetail id="masterDetail" showBreadcrumbFirstLevel="false" selectLevelListener="#{selectLevelListener.handleNavigation}">
+					
+						              
+               <!-- Level 1: Master-Tabelle -->
+               <pe:masterDetailLevel level="1"  levelLabel="Shops">
+               
+			   	<p:commandLink >
+				      <i class="pi pi-plus-circle"></i>
+             		  <pe:selectDetailLevel level="3"/>
+              	</p:commandLink>  
+              	
+              	<p:commandLink ajax="false" action="#{shopListBean.downloadAllConfigs()}" >
+				      <i class="pi pi-cloud-download"></i>
+              	</p:commandLink>  
+              	               					       
+			        <!-- dataTable   -->
+			        <p:dataTable id="tblShop" var="tblVarShop" value="#{shopListBean.shops}" widgetVar="tblwidgetVarShop">
+
+				        <p:column headerText="Name"   >
+				        	<h:outputText value="#{tblVarShop.name}"/>	  
+				        </p:column>
+				        
+				        <p:column headerText="Details"   >				      
+				        	<h:outputText value="#{tblVarShop.details}"/>
+				        </p:column>
+				        
+				        <p:column headerText="Download">
+				        	<p:commandLink ajax="false" action="#{shopListBean.downloadTemplate(tblVarShop)}" process="@this" >
+				     			<i class="pi pi-download"></i>    
+              				</p:commandLink> 
+		    		   	</p:column>
+		    		   	
+		    		   	
+		    		   	<p:column headerText="Internal link"> 
+							<p:link outcome="/shop/shopView.xhtml">
+								 <i class="pi pi-link"></i>    
+								 <o:param name="shopId" converter="shopConverter" value="#{tblVarShop}"/>  
+							</p:link>							
+				   	   </p:column>
+				   	   
+				   	   <!-- Domain Proxy link -->
+				   	   <p:column headerText="Domain (Proxy Link)"> 
+							<h:outputLink value="#{tblVarShop.domain}" target="_blank">
+					  			<i class="pi pi-external-link"></i>  
+							</h:outputLink>							
+				   	   </p:column>
+		    		   	
+		    		   	<p:column headerText="Edit">
+				            <p:commandLink >
+				           		  <i class="pi pi-pencil"></i>
+             					  <pe:selectDetailLevel contextValue="#{tblVarShop}"/>
+              				</p:commandLink>  
+            		   	</p:column>
+				        
+				
+
+				</p:dataTable>
+				
+				<!-- add new button -->
+				
+               </pe:masterDetailLevel>
+           
+           
+	        <!-- Level 2: Master-Tabelle --> 
+	        <pe:masterDetailLevel level="2" contextVar="selectedShop" levelLabel="Details">    
+	            
+		       <comp:editShopComponent shop="#{selectedShop}" />
+	            
+	            <p:commandButton value="Save" process="masterDetail"
+                         action="#{appBean.update(selectedShop)}"
+                         style="margin-top:10px;" icon="pi pi-save">
+		            <pe:selectDetailLevel level="1"/>
+		        </p:commandButton>
+		        
+		        <p:commandButton value="Delete" process="@this" 
+					 			action="#{shopListBean.deleteShop(selectedShop)}" >
+					<pe:selectDetailLevel level="1"/>
+				</p:commandButton>
+	            
+	        </pe:masterDetailLevel>
+	        
+	       	<!-- Level 3: Master-Tabelle --> 
+	        <pe:masterDetailLevel level="3"  levelLabel="new Shop">    
+	            
+				<comp:editShopComponent shop="#{appBean.newShop}" />
+		                
+	            <p:commandButton value="Save" process="masterDetail"
+                         action="#{appBean.save()}"
+                         style="margin-top:10px;" icon="pi pi-save">
+		            <pe:selectDetailLevel level="1"/>
+		        </p:commandButton> 	
+		        
+		        <p:commandButton value="Delete" process="@this" 
+					 			action="#{shopListBean.deleteShop(selectedShop)}" >
+					<pe:selectDetailLevel level="1"/>
+				</p:commandButton>
+	            
+	        </pe:masterDetailLevel>
+	        
+		</pe:masterDetail>
+ 	</h:form> 
+    </h:body>
+</html>
