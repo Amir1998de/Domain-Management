@@ -1,0 +1,64 @@
+<VirtualHost *:8082>
+    ServerName localhost
+
+  # Grant all requests access to proxy#
+
+    <proxy *>
+        Order deny,allow
+       #Deny from all 
+	Allow from all
+    </proxy>
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+
+  # if Rewrite Conf is enable # 
+    ProxyPass /resources/ http://localhost:8080/resources/
+    ProxyPassReverse /resources/ http://localhost:8080/resources/
+
+    ProxyPass / http://localhost:8080/shopId/1
+    ProxyPassReverse / http://localhost:8080/shopId/1
+
+    SetOutputFilter SUBSTITUTE
+
+    Substitute "s|/shopId/1/?|/|i"
+    # substitute if url encoded
+     Substitute "s|%2FshopId%2F1%2F?|/|i"
+    # substitute if slash encoded
+    Substitute "s|\/shopId\/1\/?|/|i"
+
+    # if Rewrite Conf. in java is not enable # 
+
+    RewriteEngine On
+
+    RewriteRule "^/$" "http://localhost:8080/shop/shopView.xhtml?shopId=1" [P]
+
+    RewriteRule "^/javax.faces.resource/(.*)" "http://localhost:8080/javax.faces.resource/$1" [P]
+
+    SetOutputFilter SUBSTITUTE
+
+    Substitute "s|/shop/shopView\.xhtml\?shopId=1|/|i"
+
+
+  # Set X-Forwarded-Proto header to "http" #
+    RequestHeader set X-Forwarded-Proto "http"
+
+</VirtualHost>
+
+
+
+
+
+
+<VirtualHost *:8082>
+    ServerName localhost2
+
+    ProxyPass /resources/ http://localhost:8080/resources/
+    ProxyPass / http://localhost:8080/shopId/2/
+    ProxyPassReverse / http://localhost:8080/shopId/2/
+
+    SubstituteMaxLineLength 3m
+     Substitute "s|/shop/2/?|/|i"
+
+</VirtualHost>
+
